@@ -1,3 +1,4 @@
+import { Link } from 'react-router';
 import { useCart } from '../context/CartContext';
 
 export default function ItemCard({ item }) {
@@ -10,24 +11,32 @@ export default function ItemCard({ item }) {
     Rare: '#4a90d9',
   }[item.rarity] || '#888';
 
+  const handleBuyClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addToCart(item);
+  };
+
   return (
-    <div className="item-card">
-      <div className="item-image" style={{ borderColor: rarityColor }}>
-        <img src={item.image} alt={item.name} />
-      </div>
-      <div className="item-info">
-        <span className="rarity" style={{ color: rarityColor }}>
-          {item.rarity}
-        </span>
-        <h3>{item.name}</h3>
-        <p className="hero">Герой: {item.hero}</p>
-        <div className="item-footer">
-          <span className="price">{item.price.toLocaleString()} ₽</span>
-          <button className="buy-btn" onClick={() => addToCart(item)}>
-            В корзину
-          </button>
+    <Link to={`/item/${item.id}`} className="item-card-link">
+      <div className="item-card">
+        <div className="item-image" style={{ borderColor: rarityColor }}>
+          <img src={item.image} alt={item.name} />
+        </div>
+        <div className="item-info">
+          <span className="rarity" style={{ color: rarityColor }}>
+            {item.rarity}
+          </span>
+          <h3>{item.name}</h3>
+          <p className="hero">Герой: {item.hero}</p>
+          <div className="item-footer">
+            <span className="price">{item.price.toLocaleString()} ₽</span>
+            <button className="buy-btn" onClick={handleBuyClick}>
+              В корзину
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
